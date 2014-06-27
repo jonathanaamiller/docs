@@ -13,8 +13,11 @@ CakePHP's model class files go in ``/app/Model``, and the file
 we'll be creating will be saved to ``/app/Model/Post.php``. The
 completed file should look like this::
 
+.. code-block:: php
+    <?php
     class Post extends AppModel {
     }
+    ?>
 
 Naming conventions are very important in CakePHP. By naming our model
 Post, CakePHP can automatically infer that this model will be used
@@ -44,9 +47,12 @@ post-related work done. We'll place this new controller in a file
 called ``PostsController.php`` inside the ``/app/Controller``
 directory. Here's what the basic controller should look like::
 
+.. code-block:: php
+    <?php
     class PostsController extends AppController {
         public $helpers = array('Html', 'Form');
     }
+    ?>
 
 Now, let's add an action to our controller. Actions often represent
 a single function or interface in an application. For example, when
@@ -54,6 +60,8 @@ users request www.example.com/posts/index (which is the same
 as www.example.com/posts/), they might expect to see a listing of
 posts. The code for that action would look something like this::
 
+.. code-block:: php
+    <?php
     class PostsController extends AppController {
         public $helpers = array('Html', 'Form');
 
@@ -61,6 +69,7 @@ posts. The code for that action would look something like this::
             $this->set('posts', $this->Post->find('all'));
         }
     }
+    ?>
 
 By defining function ``index()``
 in our PostsController, users can access the logic there by
@@ -204,8 +213,11 @@ gone wrong, or you actually did define it already, in which case
 you are very sneaky. Otherwise, we'll create it in the
 PostsController now::
 
+.. code-block:: php
+    <?php
     // File: /app/Controller/PostsController.php
-    class PostsController extends AppController {
+ 
+        class PostsController extends AppController {
         public $helpers = array('Html', 'Form');
 
         public function index() {
@@ -224,6 +236,7 @@ PostsController now::
             $this->set('post', $post);
         }
     }
+    ?>
 
 The ``set()`` call should look familiar. Notice we're using
 ``findById()`` rather than ``find('all')`` because we only want
@@ -265,6 +278,8 @@ start, but let's allow for adding new posts.
 First, start by creating an ``add()`` action in the
 PostsController::
 
+.. code-block:: php
+    <?php
     class PostsController extends AppController {
         public $helpers = array('Html', 'Form', 'Session');
         public $components = array('Session');
@@ -296,7 +311,8 @@ PostsController::
             }
         }
     }
-
+    ?>
+    
 .. note::
 
     ``$this->request->is()`` takes a single argument, which can be the
@@ -402,6 +418,7 @@ Now let's go back and update our ``/app/View/Posts/index.ctp``
 view to include a new "Add Post" link. Before the ``<table>``, add
 the following line::
 
+.. code-block:: php
     <?php echo $this->Html->link(
         'Add Post',
         array('controller' => 'posts', 'action' => 'add')
@@ -411,6 +428,8 @@ You may be wondering: how do I tell CakePHP about my validation
 requirements? Validation rules are defined in the model. Let's look
 back at our Post model and make a few adjustments::
 
+.. code-block:: php
+    <?php
     class Post extends AppModel {
         public $validate = array(
             'title' => array(
@@ -421,6 +440,7 @@ back at our Post model and make a few adjustments::
             )
         );
     }
+    ?>
 
 The ``$validate`` array tells CakePHP how to validate your data
 when the ``save()`` method is called. Here, I've specified that
@@ -444,6 +464,8 @@ should have picked up a pattern. Make the action, then the view.
 Here's what the ``edit()`` action of the PostsController would look
 like::
 
+.. code-block:: php
+    
     public function edit($id = null) {
         if (!$id) {
             throw new NotFoundException(__('Invalid post'));
@@ -467,6 +489,7 @@ like::
             $this->request->data = $post;
         }
     }
+    ?>
 
 This action first ensures that the user has tried to access an existing record.
 If they haven't passed in an ``$id`` parameter, or the post does not
@@ -554,6 +577,8 @@ Deleting Posts
 Next, let's make a way for users to delete posts. Start with a
 ``delete()`` action in the PostsController::
 
+.. code-block:: php
+    
     public function delete($id) {
         if ($this->request->is('get')) {
             throw new MethodNotAllowedException();
@@ -671,6 +696,8 @@ route. It looks like this:
 This line connects the URL '/' with the default CakePHP home page.
 We want it to connect with our own controller, so replace that line
 with this one::
+
+.. code-block:: php
 
     Router::connect('/', array('controller' => 'posts', 'action' => 'index'));
 
